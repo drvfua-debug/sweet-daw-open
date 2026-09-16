@@ -1,0 +1,14 @@
+[
+  {
+    "name": "song_a",
+    "reference": "song_a_reference.wav",
+    "candidate": "song_a_candidate.wav",
+    "profile": "sheen_missing"
+  },
+  {
+    "name": "song_b",
+    "reference": "song_b_reference.wav",
+    "candidate": "song_b_candidate.wav",
+    "profile": "muffle"
+  }
+]

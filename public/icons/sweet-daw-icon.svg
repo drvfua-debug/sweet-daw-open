@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Sweet DAW">
+  <rect width="512" height="512" rx="96" fill="#080a0f"/>
+  <path d="M96 326c36-70 72-70 108 0s72 70 108 0 72-70 108 0" fill="none" stroke="#4dd9ff" stroke-width="28" stroke-linecap="round"/>
+  <path d="M104 208h304" stroke="#65f0a4" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="158" cy="208" r="28" fill="#f4c95d"/>
+  <circle cx="258" cy="208" r="28" fill="#ff6fa8"/>
+  <circle cx="354" cy="208" r="28" fill="#b48cff"/>
+  <path d="M148 384h216" stroke="#f4f7fb" stroke-width="22" stroke-linecap="round" opacity=".9"/>
+</svg>

@@ -1,0 +1,32 @@
+name: sweet-daw-verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "codex/**"
+      - "feature/**"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build
+      - run: npm run aimix:selftest
+      - name: Optional audio golden regression
+        shell: bash
+        run: |
+          if [ -f test-fixtures/audio/golden/pairs.json ]; then
+            npm run audio:golden
+          else
+            echo "No golden audio fixture config found; skipping audio:golden."
+          fi

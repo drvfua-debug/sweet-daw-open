@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sweet DAW Guide</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b12;
+      --panel: #101722;
+      --panel-soft: #151f2d;
+      --line: rgba(154, 224, 255, 0.18);
+      --text: #f4f7fb;
+      --muted: #aeb8c5;
+      --cyan: #7ee7ff;
+      --green: #8ff5bd;
+      --amber: #ffd27a;
+      --rose: #ff8fa3;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(126, 231, 255, 0.08), transparent 28%), var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+      letter-spacing: 0;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 11, 18, 0.94);
+      backdrop-filter: blur(18px);
+    }
+    .wrap { width: min(1080px, calc(100vw - 28px)); margin: 0 auto; }
+    .top { display: flex; gap: 16px; align-items: center; justify-content: space-between; min-height: 74px; }
+    h1 { margin: 0; font-size: clamp(26px, 5vw, 44px); line-height: 1.08; }
+    .subtitle { margin: 6px 0 0; color: var(--muted); }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      color: var(--cyan);
+      background: rgba(126, 231, 255, 0.08);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    nav { display: flex; gap: 8px; overflow-x: auto; padding: 0 0 12px; }
+    nav a {
+      flex: 0 0 auto;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255,255,255,0.03);
+    }
+    nav a:focus, nav a:hover { color: var(--cyan); border-color: var(--line); }
+    main { padding: 28px 0 56px; }
+    section {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(16, 23, 34, 0.86);
+      border-radius: 14px;
+      padding: clamp(18px, 4vw, 28px);
+      margin: 0 0 18px;
+    }
+    h2 { margin: 0 0 12px; font-size: clamp(21px, 4vw, 30px); color: var(--cyan); }
+    h3 { margin: 22px 0 8px; font-size: 16px; color: var(--green); }
+    p { margin: 0 0 12px; color: var(--muted); }
+    strong { color: var(--text); }
+    code {
+      color: var(--cyan);
+      background: rgba(126, 231, 255, 0.08);
+      border: 1px solid rgba(126, 231, 255, 0.16);
+      border-radius: 6px;
+      padding: 1px 5px;
+    }
+    ul, ol { margin: 0 0 14px; padding-left: 1.2rem; color: var(--muted); }
+    li { margin: 5px 0; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+    .card, .note, .warn, .ok {
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+    }
+    .note { border-color: rgba(126, 231, 255, 0.22); background: rgba(126, 231, 255, 0.07); }
+    .ok { border-color: rgba(143, 245, 189, 0.22); background: rgba(143, 245, 189, 0.07); }
+    .warn { border-color: rgba(255, 210, 122, 0.28); background: rgba(255, 210, 122, 0.08); }
+    .danger { border-color: rgba(255, 143, 163, 0.28); background: rgba(255, 143, 163, 0.08); }
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
+    table { width: 100%; border-collapse: collapse; min-width: 660px; background: rgba(0,0,0,0.16); }
+    th, td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); vertical-align: top; text-align: left; font-size: 13px; }
+    th { color: var(--cyan); background: rgba(126, 231, 255, 0.06); }
+    td { color: var(--muted); }
+    .steps { counter-reset: step; list-style: none; padding-left: 0; display: grid; gap: 9px; }
+    .steps li {
+      position: relative;
+      padding: 12px 12px 12px 44px;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+    }
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      background: var(--cyan);
+      color: #001019;
+      font-weight: 900;
+    }
+    footer { padding: 24px 0 48px; color: var(--muted); font-size: 12px; text-align: center; }
+    @media (max-width: 640px) {
+      .top { align-items: flex-start; flex-direction: column; gap: 8px; padding: 14px 0 10px; }
+      section { border-radius: 12px; }
+      th, td { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="top">
+        <div>
+          <h1>Sweet DAW Guide</h1>
+          <p class="subtitle">iPhone Safari/PWA 向け Remix & Mastering Web DAW</p>
+        </div>
+        <span class="pill">2026-07 最新版</span>
+      </div>
+      <nav aria-label="Guide navigation">
+        <a href="#basic">基本手順</a>
+        <a href="#import">読み込み</a>
+        <a href="#bpm-lock">BPM Lock</a>
+        <a href="#arrange">Arrange</a>
+        <a href="#repair">Repair</a>
+        <a href="#aimix">AIMIX</a>
+        <a href="#philosophy">Mix Philosophy</a>
+        <a href="#spatial">Spatial</a>
+        <a href="#mastering">Mastering</a>
+        <a href="#export">Export</a>
+        <a href="#safety">安全</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="basic">
+      <h2>AIMIXから簡易マスタリングへの流れ</h2>
+      <p>Reference付きの複数stemを仕上げる場合は、次の順番をSweet DAWの標準フローとして使用します。AIMIXでバランスを作り、Spatialで定位を整理してから、最後にDark GlossとLight Masterを適用します。</p>
+      <div class="ok"><strong>標準フロー:</strong> Reference＋stem読み込み → AIMIX Standard → FIX → Run Reference Finish → Spatial Auto → Dark Gloss → Light Master → Render Processed Master → Processed WAV書き出し</div>
+      <ol class="steps">
+        <li><strong>Files または Arrange でstemとReferenceを読み込みます。</strong> Suno由来のstemは数字順に並びます。数字で始まらない完成WAVはReferenceとして扱い、解析の目標に使用します。</li>
+        <li><strong>Arrangeでトラック順、波形、Roleを確認します。</strong> スマホではMove LockをONのままにし、clipを編集する時だけ解除します。Project BPMもこの段階で確認します。</li>
+        <li><strong>AIMIXタブで「AIMIX Standard」を実行します。</strong> Before / Afterを聴き、音量だけでなくVocalの輪郭、低域、こもりを確認します。Afterが良い場合は「FIXする」でプロジェクトへ確定します。</li>
+        <li><strong>Referenceが解析済みなら「Run Reference Finish」を実行します。</strong> Referenceの音量、密度、帯域を目標としてstem mixを安全範囲で整えます。Reference音声そのものをmixへ加える処理ではありません。</li>
+        <li><strong>Spatialタブで「Spatial Auto」を実行します。</strong> Vocal、Bass、Drumsを中央に保護し、Support、Synth、Guitar、FXを必要な範囲だけ左右へ整理します。品質条件を満たさない場合は自動的にAIMIX後の状態へ戻ります。</li>
+        <li><strong>MasteringタブのAIMIX Glowで「Dark Gloss」を選びます。</strong> Vocal連動の控えめな艶と明瞭感を加えます。明るさを強く足すプリセットではなく、刺さりやAI由来のざらつきを避ける仕上げとして使います。</li>
+        <li><strong>簡易マスタリングは「Light Master」を選びます。</strong> 通常はTarget LoudnessとTrue Peakの初期設定を維持します。Reference Catch-UpやLoud Releaseは、標準結果を確認した後に必要な場合だけ使用します。</li>
+        <li><strong>「Render Processed Master」を押して仕上がりを準備します。</strong> 処理後はOriginal / ProcessedでA/Bし、Vocal、低域、艶、音圧に不自然さがないか確認します。</li>
+        <li><strong>同じ場所の「Export Processed WAV」を押します。</strong> 未レンダー時は「Polish &amp; Export Processed WAV」と表示され、レンダーと書き出しを一度に行います。iPhoneでは進捗画面を閉じず、そのまま完了まで待ちます。</li>
+        <li><strong>必要に応じてFilesからプロジェクトや素材も保存します。</strong> <code>.swtd</code>は音声素材を含むプロジェクトです。Filesの「WAV」はAIMIX、Spatial、Plug-inを含むプロジェクトミックスを書き出し、Masteringの一時的なProcessed音声を確実に含める場合は「Export Processed WAV」を使います。</li>
+      </ol>
+      <div class="ok"><strong>大事な考え方:</strong> Reference は目標の分析に使います。通常の書き出し WAV に Reference 音声そのものは混ざりません。</div>
+      <div class="note"><strong>書き出し名:</strong> Referenceが<code>まだまだ.wav</code>の場合、初回は<code>まだまだ_sw_master.wav</code>、次回は<code>まだまだ_sw_master_02.wav</code>として保存されます。</div>
+      <div class="warn"><strong>標準フローへ処理を足しすぎない:</strong> High boost、Stereo widen、Limiter drive、Exciter、強いReverbを重ねると、AI音源のざらつきやこもりが目立つ場合があります。まずDark Gloss＋Light Masterで確認してください。</div>
+    </section>
+
+    <section id="philosophy">
+      <h2>Sweet DAWのMix Philosophy</h2>
+      <p>Sweet DAWは、音量を先に上げるのではなく、stemの役割、帯域、定位を整理してから仕上げるためのWeb DAWです。AIMIXは強い加工を自動で重ねる機能ではなく、Before / Afterを確認しながら必要な補正だけをFIXする提案型の流れを基本にしています。</p>
+      <div class="cards">
+        <div class="card"><strong>Low-End</strong><br />20〜60Hzを無理に増やさず、80〜120Hzと倍音でスマホでも聴こえる低域へ翻訳します。Bass / Kick / Subは中央を守ります。</div>
+        <div class="card"><strong>Vocal</strong><br />Airだけで明るくせず、300〜600Hzのこもり、3〜5kHzの輪郭、6〜9kHzの刺さりを順番に確認します。Lead Vocalは基本的に中央です。</div>
+        <div class="card"><strong>Stage</strong><br />Stereo Widenerで全体を広げるのではなく、Guitar / Synth / FXなどのsupport stemを小さく左右へ配置します。低域はwide pathへ入れません。</div>
+        <div class="card"><strong>Mastering</strong><br />Limiterで押し切らず、密度、コントラスト、True Peak安全性を見ながら最後に整えます。Denseは音圧優先ではなく、軽い密度補正として扱います。</div>
+      </div>
+      <div class="note">Safeでは、自動のParallel Comp、Reverb、Widener、Bass Translatorを挿しません。まずBalancedでA/Bし、必要な場合だけDenseや個別プラグインを使うのが標準です。</div>
+    </section>
+
+    <section id="import">
+      <h2>読み込みと保存</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>対象</th><th>扱い</th><th>補足</th></tr></thead>
+          <tbody>
+            <tr><td>数字で始まる WAV</td><td>stem</td><td><code>0 Vocal.wav</code>、<code>1 Bass.wav</code> のようなファイルは stem として順番に並べます。</td></tr>
+            <tr><td>数字で始まらない完成 WAV</td><td>Reference</td><td>曲名だけの WAV は Reference として扱い、AIMIX / Mastering の目標分析に使います。</td></tr>
+            <tr><td>loop / one-shot</td><td>素材</td><td>任意のトラックへ追加し、snap や trim で配置します。</td></tr>
+            <tr><td><code>.swtd</code></td><td>プロジェクト</td><td>音声 asset を含む Sweet DAW 独自形式です。他端末への移動に向いています。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="warn">Mac/iPhone 由来の <code>._2 Drums.wav</code> のような AppleDouble ファイルは音声本体ではありません。通常の <code>2 Drums.wav</code> を読み込んでください。</div>
+    </section>
+
+    <section id="bpm-lock">
+      <h2>BPM Lock</h2>
+      <p>BPM Lock は、一定BPMのstemを Project BPM のグリッドへ軽く寄せるための補助/上級機能です。元ファイルを直接上書きせず、補正済みの新しい audio asset と clip を追加します。</p>
+      <div class="cards">
+        <div class="card"><strong>いつ使うか</strong><br />曲全体がほぼ一定BPMで、stem 同士は合っているが Arrange の beat grid から少しずれている時だけ使います。万能な拍合わせ機能ではありません。</div>
+        <div class="card"><strong>基本モード</strong><br />通常は <code>Tight</code> を選びます。音の自然さとグリッド追従のバランスが良く、Suno stemの標準作業に向いています。</div>
+        <div class="card"><strong>Reference</strong><br />数字で始まらない完成WAVがある場合は、解析用Referenceとして使えます。Reference音声そのものは、通常のmix書き出しへ混ぜません。</div>
+        <div class="card"><strong>Undoしやすい設計</strong><br />BPM Lock後は元clipを残しつつ、補正済みclipを新規トラックとして扱います。不要なら補正済みトラックを削除できます。</div>
+      </div>
+      <h3>表示項目の意味</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>項目</th><th>意味</th><th>目安</th></tr></thead>
+          <tbody>
+            <tr><td>Target BPM</td><td>Project BPMとして使うテンポです。</td><td>Referenceやstem解析から近い値を選び、必要なら手動で調整します。</td></tr>
+            <tr><td>Ready stem count</td><td>BPM Lock対象として準備できているstem数です。</td><td>0の場合は、先にstemを読み込んでください。</td></tr>
+            <tr><td>Mode</td><td>補正の強さです。</td><td><code>Loose</code>は自然、<code>Tight</code>は標準、<code>Hard</code>はドラムが明確な素材向けです。</td></tr>
+            <tr><td>Confidence</td><td>解析結果の信頼度です。</td><td>低い場合は無理に補正せず、Project BPMやReferenceを確認してください。</td></tr>
+            <tr><td>Max Warp</td><td>どの程度タイミング補正を許可するかです。</td><td>大きくしすぎると音質が崩れるため、必要最小限にします。</td></tr>
+            <tr><td>Rendered / Skipped</td><td>実際に補正済みassetを作った数と、対象外にした数です。</td><td>Skippedが多い場合は、短すぎる素材やReference扱いのファイルが混ざっていないか確認します。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ok"><strong>標準導線:</strong> stem読み込み → 自動設定されたProject BPM確認 → Arrangeで波形確認 → AIMIX Standard / Reference Finish → Spatial Auto → Dark Gloss → Light Master → Processed WAV書き出しが基本です。BPM Lockは一定BPMの素材で必要な時だけ開いてください。</div>
+      <div class="warn"><strong>注意:</strong> BPM Lockは長尺stem全体を高品質にtime-stretchする万能機能ではありません。Reference自体の揺れが大きい場合は、意図的なテンポ変化の可能性があるため自動レンダーを止めます。強い補正が必要な素材では、音質を優先して手動配置や短いclip単位の編集も検討してください。</div>
+    </section>
+
+    <section id="arrange">
+      <h2>Arrange</h2>
+      <p>Arrange は clip を配置、移動、分割、複製、trim する画面です。トラック数が多い場合は下方向スクロールを使い、必要なトラックを選択してから Mix へ移動すると、そのトラックを中心に調整しやすくなります。</p>
+      <div class="cards">
+        <div class="card"><strong>Move Lock</strong><br />clip の誤移動を防ぎます。編集する時だけ解除してください。</div>
+        <div class="card"><strong>Split / Duplicate</strong><br />選択した clip を切る、または真下へ複製します。切った部分だけを複製する用途にも使えます。</div>
+        <div class="card"><strong>Pan Editor</strong><br />通常は OFF です。Pan ボタンを押すと表示され、clip の時間軸に沿ってアンカーポイントで左右位置を編集できます。</div>
+        <div class="card"><strong>5x Pan View</strong><br />Pan 編集時だけ波形を大きく表示できます。指で細かく触るための補助表示です。</div>
+      </div>
+    </section>
+
+    <section id="repair">
+      <h2>Repair Visual / Spectral Editor Pro Lite</h2>
+      <p>Repair は、AI stem に残るクリック、歯擦音、金属的な高域、低域のにじみなどを、範囲指定して軽く補正するための画面です。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>機能</th><th>役割</th><th>注意</th></tr></thead>
+          <tbody>
+            <tr><td>De-Chirp</td><td>細い高域の鳴きやチリつきを抑えます。</td><td>強くしすぎると艶も減ります。</td></tr>
+            <tr><td>De-Harsh</td><td>耳に刺さる 2kHz から 8kHz 付近を軽く整理します。</td><td>Vocal の輪郭まで削らないようにします。</td></tr>
+            <tr><td>De-Click</td><td>短いクリックやプチ音をなめらかにします。</td><td>広い範囲へかけるより、問題箇所だけに使います。</td></tr>
+            <tr><td>Low-End Tighten Lite</td><td>低域の左右ブレやにじみを抑えます。</td><td>Bass の芯を削りすぎないようにします。</td></tr>
+            <tr><td>Removed-only / Delta</td><td>取り除いた成分だけを確認します。</td><td>安全のため音量を下げて再生します。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Repair の候補は、FIX するまでは編集候補です。FIX したものだけが export report に反映状態として表示されます。</p>
+    </section>
+
+    <section id="aimix">
+      <h2>AIMIX / Unmask Matrix</h2>
+      <p>AIMIX は、音を派手にするためだけの機能ではありません。stem 同士の帯域の重なり、Vocal の見え方、Bass と Kick の場所、Reference との差分を見て、必要な補正を提案します。</p>
+      <ul>
+        <li><strong>AIMIX Standard:</strong> 最初に使う標準設定です。Balancedを基準に、安全な音量、EQ、Role、Artifact補正を提案します。</li>
+        <li><strong>Run Reference Finish:</strong> AIMIXをFIXした後、解析済みReferenceへ音量、密度、帯域を安全に近づけます。</li>
+        <li><strong>A/B:</strong> 加工前後を確認します。良くなった時だけ FIX します。</li>
+        <li><strong>Reference Delta:</strong> Reference と現在の mix の差を、上限付きで提案へ変換します。</li>
+        <li><strong>Unmask Matrix:</strong> Vocal や主旋律を邪魔している帯域だけを軽く ducking します。全帯域を一括で下げる処理ではありません。</li>
+        <li><strong>exportStatus:</strong> <code>applied</code> は書き出し反映済み、<code>bypassed</code> は無効または未 FIX、<code>not-wired</code> は保存済みだが現在の export 経路に未接続という意味です。</li>
+      </ul>
+      <div class="note">AIMIX は提案型です。強い補正より、stem の透明感を残す方向を優先してください。</div>
+    </section>
+
+    <section id="spatial">
+      <h2>Spatial</h2>
+      <p>Spatial は音像の整理に使います。低域や主役を広げるのではなく、伴奏や装飾音を少し左右や奥へ逃がす考え方です。</p>
+      <ul>
+        <li><strong>Spatial Auto:</strong> 標準で使用します。AIMIX後のEQを変えず、固定Track Panを安全に設計します。</li>
+        <li>Lead Vocal、Bass、Kick は基本的に中央を保護します。</li>
+        <li>Guitar、Synth、Keys、FX は必要に応じて軽く左右へ配置します。</li>
+        <li>120Hz 以下を広げる処理は原則避けます。</li>
+        <li>Reference より Side が広すぎる場合、高域 Side を抑えることがあります。</li>
+      </ul>
+    </section>
+
+    <section id="mastering">
+      <h2>Mastering / Magic Polish / Master Polish 2</h2>
+      <p>Mastering は最終段です。AIMIX と Spatial でバランスを整えた後、音圧、ピーク、低域、艶、ざらつきを確認します。</p>
+      <div class="cards">
+        <div class="card"><strong>Dark Gloss</strong><br />AIMIX Glowの標準プリセットです。Vocalを手掛かりに、刺さりを増やさず控えめな艶と明瞭感を補います。</div>
+        <div class="card"><strong>Light Master</strong><br />現在のmixを仕上げる標準の簡易マスタリングです。強い音圧化より、バランス、余白、True Peakの安全性を優先します。</div>
+        <div class="card"><strong>Render Processed Master</strong><br />Dark GlossとLight Masterを現在のmixへ適用し、Original / ProcessedのA/B用音声を準備します。</div>
+        <div class="card"><strong>Export Processed WAV</strong><br />簡易マスタリング済みのWAVを書き出します。未レンダー時はPolish &amp; Export Processed WAVとして一括処理できます。</div>
+        <div class="card"><strong>Master Polish 2</strong><br />Reference Delta と Target Profile を使い、低域、安全ピーク、ざらつき、軽い艶をまとめて扱います。</div>
+        <div class="card"><strong>Estimated / Approximate</strong><br />ブラウザ内での軽量推定です。実測 LUFS メーターの完全代替ではありませんが、A/B と安全確認には有効です。</div>
+      </div>
+      <div class="ok"><strong>通常の選択:</strong> AIMIX GlowはDark Gloss、Mastering ModeはLight Masterを選びます。Reference Catch-Up、Loudness Only、Loud Releaseは任意の上級設定です。</div>
+      <div class="warn">AI 音源は高域を足すほど良くなるとは限りません。10kHz 以上を増やす前に、500Hz から 5kHz のこもりや Vocal の輪郭を確認してください。</div>
+    </section>
+
+      <div class="note"><strong>Export truth:</strong> Master Polish 2 / Final Repair Modules are shown as <code>applied</code> only when that stage is actually connected to the current export audio. If the report says <code>not-wired</code>, the setting is saved but that stage is not printed into the WAV.</div>
+    <section id="export">
+      <h2>Export Report の読み方</h2>
+      <p>Files 画面の Last Export Report では、書き出しにどの処理が反映されたかを確認できます。</p>
+      <div class="note"><strong>ファイル名:</strong> Master WAVはReference名を基準に<code>曲名_sw_master.wav</code>となり、2回目以降は<code>曲名_sw_master_02.wav</code>、<code>_03.wav</code>と自動採番されます。</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>表示</th><th>意味</th></tr></thead>
+          <tbody>
+            <tr><td>Applied</td><td>FIX 済み、または有効な処理として書き出しに反映されています。</td></tr>
+            <tr><td>Bypassed</td><td>無効、未 FIX、または今回の export 対象外です。</td></tr>
+            <tr><td>Not wired</td><td>設定や状態は保存されていますが、現在の export 経路には未接続です。警告として扱ってください。</td></tr>
+            <tr><td>Warnings</td><td>安全上の注意、未接続、近似値、推定値などの補足です。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Copy または JSON で report を保存しておくと、書き出し結果の確認や不具合調査に使えます。</p>
+    </section>
+
+    <section id="safety">
+      <h2>Performance / Mobile Safety</h2>
+      <ul>
+        <li>重い解析や export は chunk に分け、progress と cancel を表示します。</li>
+        <li>iPhone Safari/PWA では、長時間 main thread を止めないことを優先します。</li>
+        <li>Project / .swtd には巨大な解析行列や raw PCM cache を保存しません。</li>
+        <li>mobile では 0.5 から 1.0 秒程度の audio chunk を目安にします。</li>
+        <li>full-band widen、強い high exciter、過剰な limiter は初期設定では使いません。</li>
+      </ul>
+      <div class="danger"><strong>音が悪くなる典型例:</strong> Reference トラックを実音として混ぜる、Limiter 後に master gain を上げる、複数トラックへ高域サチュレーションを重ねる、Vocal の De-Esser を強くしすぎる、低域を stereo に広げる。</div>
+    </section>
+  </main>
+
+  <footer>
+    Sweet DAW はブラウザ内で動作するローカル処理中心の DAW です。元ファイルを直接上書きしません。
+  </footer>
+</body>
+</html>

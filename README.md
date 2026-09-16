@@ -1,0 +1,148 @@
+# Sweet DAW
+
+Sweet DAW is a mobile-first Remix & Mastering Web DAW for iPhone Safari / PWA workflows. It is designed for Suno stems, AI-generated audio, WAV loops, one-shots, and quick mastering/export work in the browser.
+
+Public app target: `https://drvf.net/lando_hp/sdaw/`
+
+## Current Focus
+
+Sweet DAW is not a full Logic Pro / Ableton replacement. The current goal is a stable phone-first DAW for:
+
+- importing up to 12 stems, including Suno-style numbered files
+- arranging multiple clips per track
+- moving, trimming, splitting, duplicating, deleting, and copying clips/tracks
+- locking clip movement to avoid accidental phone touches
+- mixing with role-aware volume, pan, EQ, compressor, limiter, and plug-ins
+- using AIMIX with proposal, A/B check, adjustment, FIX, and Magic Polish
+- exporting WAV and restoring full projects through `.swtd`
+
+## BPM Lock
+
+BPM Lock is an offline material-render tool, not an insert plug-in. It analyzes one rhythmic reference stem in the browser, builds a shared tempo map, renders BPM-locked versions of eligible full-length stems, saves the rendered WAV assets locally, creates new tracks, and mutes the originals.
+
+The intended workflow is:
+
+```text
+Import
+-> BPM Lock
+-> Repair / Arrange / Mix
+-> AIMIX / Mix Doctor / Glow
+-> Mastering / Export
+```
+
+BPM Lock intentionally runs before plug-ins and AIMIX because tempo drift correction changes the timeline itself. Keeping it before EQ, compression, limiter, and AIMIX preserves phase alignment between linked Suno stems and keeps playback/export behavior deterministic.
+
+BPM Lock does not use an external server, cloud analysis, remote plug-in host, or third-party WASM. It uses local AudioBuffer analysis, beat-anchor mapping, bounded per-segment warp, and browser-side WAV rendering.
+
+## Important Safety Rule
+
+Sweet DAW does not overwrite original audio files. Audio edits are non-destructive. Finished mixes and backups are downloaded as new WAV, JSON, or `.swtd` files.
+
+## Built-in Plug-ins
+
+The current built-in plug-in set includes:
+
+- Sweet Parametric EQ
+- Sweet Compressor
+- Sweet Limiter
+- Sweet Filter
+- Sweet Drive
+- Sweet Saturator
+- Sweet Peak Maximizer
+- Sweet Utility
+- Sweet Delay Lite
+- Sweet Reverb Lite
+- Sweet Guitar Drive / Amp / Cab / Rig
+- Sweet Vocal FX
+- Sweet Bass Enhancer
+- Sweet De-Esser
+- Sweet Gate Lite
+- Sweet Chorus
+- Sweet Phaser
+- Sweet Stereo Widener
+- Sweet Transient Shaper
+- Sweet Rhythm Chopper
+- Sweet Vocoder Lite
+- Sweet Pitch Assist
+- Sweet Granular Texture
+- Sweet Multiband Comp
+- Sweet Wavetable Carrier
+
+Playback and offline export share the same plug-in chain order and parameter values. Sweet Peak Maximizer is master-only: playback uses a light realtime preview, while WAV export applies its offline lookahead peak pass after rendering the mix.
+
+## AIMIX
+
+AIMIX is intentionally structured as:
+
+1. AIMIX proposal
+2. Optimized A/B
+3. Manual adjustment
+4. FIX, which makes the result part of the project and WAV export
+5. Magic Polish
+
+Magic Pro Polish supports Safe, Balanced, and Loud modes. Balanced is the default. The current implementation avoids blind low-end boosting, excessive 8 kHz+ air, full-band widening, and unnecessary processing on lead vocals.
+
+If Mix Doctor has a reference analysis, AIMIX can use Reference Delta to apply bounded master EQ feedback.
+
+## Project Export
+
+- WAV: rendered final audio
+- WAV with tail: rendered audio including delay/reverb tail
+- `.swtd`: Sweet DAW portable project package, including audio assets
+- JSON: project metadata only, without audio assets
+
+## Development
+
+For a reproducible dependency install, prefer:
+
+```bash
+npm ci
+npm run dev
+```
+
+Open:
+
+- `http://localhost:3000`
+- `http://localhost:3000/daw`
+
+## Verify
+
+```bash
+npm run typecheck
+npm run test
+npm run build
+npm run aimix:selftest
+```
+
+## Static Publish Build
+
+For static deployment under `/lando_hp/sdaw/`:
+
+```powershell
+cmd /c npm run build:publish
+```
+
+Then upload the generated `out` directory contents to the web server path used by the public app.
+
+## Guide
+
+The current Japanese user guide lives at:
+
+- `public/sweet_daw_guide.html`
+
+It is copied into `out/sweet_daw_guide.html` by the static build.
+
+## Open Source
+
+Sweet DAW is released under the MIT License. See `LICENSE`.
+
+- Third-party dependency and redistribution notes: `THIRD_PARTY_NOTICES.md`
+- Contribution guide: `CONTRIBUTING.md`
+- Security reporting: `SECURITY.md`
+- Publication baseline and clean-history rules: `docs/OPEN_SOURCE_RELEASE.md`
+
+The open-source snapshot is source-first: it does not intentionally include user audio, commercial sample packs, external IR libraries, model weights, native plug-in binaries, or third-party WASM DSP binaries. Core audio processing in this snapshot runs in the browser and does not require a remote audio-processing API.
+
+### Suno and other third-party services
+
+Sweet DAW can work with user-provided audio files generated by third-party tools, including Suno. Sweet DAW is an independent project and is not an official Suno product or integration. The reviewed browser-local workflow does not require Suno credentials, account automation, or an unofficial Suno API client.

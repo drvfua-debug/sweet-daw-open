@@ -1,0 +1,6 @@
+export const SWEET_DAW_BUILD_INFO = {
+  "appName": "Sweet DAW",
+  "version": "0.1.0",
+  "buildId": "0.1.0-20260722021831",
+  "createdAt": "2026-07-22T02:18:31.074Z"
+} as const;

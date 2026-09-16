@@ -1,0 +1,41 @@
+{
+  "name": "sweet-daw",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "node scripts/write-build-version.mjs",
+    "dev": "next dev",
+    "build": "next build",
+    "build:publish": "set NEXT_PUBLIC_STATIC_EXPORT=true&& npm run build",
+    "start": "next start",
+    "aimix:selftest": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audio/aimixSelfTest.ts",
+    "audio:aimix-no-reference": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audio/aimix-no-reference-regression.ts",
+    "audio:golden": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/audio/goldenReferenceRegression.ts --config test-fixtures/audio/golden/pairs.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "verify": "npm run typecheck && npm run test && npm run build"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "next": "^15.0.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "^15.0.4",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  }
+}
