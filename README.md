@@ -154,6 +154,8 @@ They are **not** a runtime requirement for Sweet DAW. Contributors and maintaine
 
 Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
+Project participation is also covered by the [Code of Conduct](CODE_OF_CONDUCT.md), and current decision-making and maintainer responsibilities are documented in [GOVERNANCE.md](GOVERNANCE.md).
+
 Useful starting areas include:
 
 - Safari / mobile audio reliability,
