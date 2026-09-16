@@ -1,0 +1,51 @@
+name: Feature request
+description: Propose a focused improvement to Sweet DAW
+title: "[Feature] "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or workflow gap
+      description: What user problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior, not only the UI.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary area
+      options:
+        - Import / project restore
+        - Timeline / editing
+        - Playback
+        - BPM Lock
+        - Repair
+        - AIMIX / Mix Doctor
+        - Spatial
+        - Mastering
+        - Export
+        - Plug-ins / DSP
+        - Accessibility / mobile UX
+        - Developer tooling
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Design constraints considered
+      options:
+        - label: I considered mobile Safari / PWA CPU and memory constraints.
+        - label: I considered whether the feature can remain local-first and non-destructive.
+        - label: I considered licensing/provenance for any new dependency, model, DSP, sample, or binary.
