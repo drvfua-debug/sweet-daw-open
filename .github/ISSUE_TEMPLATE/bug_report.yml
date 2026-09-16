@@ -1,0 +1,77 @@
+name: Bug report
+description: Report a reproducible Sweet DAW problem
+title: "[Bug] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please do not attach private, copyrighted, or commercial audio unless you have the right to share it publicly.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reliable reproduction path.
+      placeholder: |
+        1. Open ...
+        2. Import ...
+        3. Tap ...
+        4. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Safari 26 / Chrome ...
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device / operating system
+      placeholder: iPhone / iOS, macOS, Windows, Android ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Import / project restore
+        - Timeline / editing
+        - Playback
+        - BPM Lock
+        - Repair
+        - AIMIX / Mix Doctor
+        - Spatial
+        - Mastering
+        - Export
+        - UI / PWA
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or additional evidence
+      description: Paste console output, screenshots, or details that do not contain secrets or private audio.
